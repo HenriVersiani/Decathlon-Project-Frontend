@@ -8,7 +8,7 @@ export default function Dashboard() {
             <br />
 
             <ul role="list" class="divide-y divide-white/5 justify-center items-center grid ">
-                <li class="flex justify-around gap-x-6 py-5 bg-sky-800 w-300 rounded">
+                <li class="flex justify-around gap-x-6 py-5 bg-blue-800 w-300 rounded">
                     <div class="flex min-w-0 gap-x-4 ">
                         <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="size-12 flex-none rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10" />
                         <div class="min-w-0 flex-auto">
@@ -27,7 +27,7 @@ export default function Dashboard() {
                     </div>
                 </li>
                 <br />
-                   <li class="flex justify-around gap-x-6 py-5 bg-sky-800 w-300 rounded ">
+                   <li class="flex justify-around gap-x-6 py-5 bg-blue-800 w-300 rounded ">
                     <div class="flex min-w-0 gap-x-4">
                         <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="size-12 flex-none rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10" />
                         <div class="min-w-0 flex-auto">
