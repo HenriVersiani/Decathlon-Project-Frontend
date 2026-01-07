@@ -18,7 +18,7 @@ export default function Home() {
             "nome": nome,
             "email": email,
             "senha": password,
-            "imagem": "image_link",
+            "imagem": "https://img.freepik.com/vetores-premium/icone-de-perfil-de-usuario-em-estilo-plano-ilustracao-em-vetor-avatar-membro-em-fundo-isolado-conceito-de-negocio-de-sinal-de-permissao-humana_157943-15752.jpg?semt=ais_hybrid&w=740&q=80",
         })
 
         const res = await req.data
@@ -38,7 +38,7 @@ export default function Home() {
 
     return (
         <>
-        <Header/>
+        <Header header="no"/>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <ToastContainer />
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -92,8 +92,8 @@ export default function Home() {
                                     Password
                                 </label>
                                 <div className="text-sm">
-                                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                        Forgot password?
+                                    <a href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                        Login
                                     </a>
                                 </div>
                             </div>

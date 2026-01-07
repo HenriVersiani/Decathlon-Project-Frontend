@@ -21,6 +21,7 @@ export default function Login() {
         const res = await req.data
 
          if (res.token) {
+            localStorage.setItem("token", res.token)
             toast.success("Success!")
             setTimeout(() => {
                 navigate("/dashboard");
@@ -33,7 +34,7 @@ export default function Login() {
 
     return (
         <>
-        <Header/>
+            <Header header="no"/>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <ToastContainer />
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -72,8 +73,8 @@ export default function Login() {
                                     Password
                                 </label>
                                 <div className="text-sm">
-                                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                        Forgot password?
+                                    <a href="/" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                        Create an Account
                                     </a>
                                 </div>
                             </div>
