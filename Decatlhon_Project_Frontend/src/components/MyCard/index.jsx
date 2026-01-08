@@ -1,12 +1,13 @@
 import { useEffect } from "react"
 
+export function primeiraLetraMaiuscula(role) {
+   return role.charAt(0).toUpperCase() + role.slice(1)
+}
+
 export default function MyCard({ cardParams }) {
     const { _id, nome, email, imagem, role } = cardParams
-
-    function primeiraLetraMaiuscula(role) {
-        return role.charAt(0).toUpperCase() + role.slice(1)
-    }
-
+    
+    
     return (
         <li class="flex justify-around gap-x-6 py-5 bg-gray-200 w-300 rounded mb-5">
             <div class="flex min-w-0 gap-x-4 ">
@@ -25,7 +26,7 @@ export default function MyCard({ cardParams }) {
                     <p class="text-xs/5 text-gray-400">Active</p> {/* nova chave possivel de atividade.*/}
                 </div>  
             </div>
-             <a  href={`user/id/:${_id}`} class="bg-[#17172B] hover:bg-gray-700 cursor-pointer text-gray-200 flex items-center font-semibold py-1 px-4 border border-gray-400 rounded shadow">
+             <a  href={`user/id/${_id}`} class="bg-[#17172B] hover:bg-gray-700 cursor-pointer text-gray-200 flex items-center font-semibold py-1 px-4 border border-gray-400 rounded shadow">
                     View
             </a>
         </li>

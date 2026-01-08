@@ -21,6 +21,8 @@ export default function Login() {
 
         const res = await req.data
 
+        console.log(res)
+
          if (res.token) {
             localStorage.setItem("token", res.token)
             toast.success("Success!")

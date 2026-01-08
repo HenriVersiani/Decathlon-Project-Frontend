@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { toast, ToastContainer } from "react-toastify"
@@ -9,14 +10,14 @@ export default function Header(header) {
 
         async function userAlreadyLogged(token) {
     
-            console.log(token)
-    
             if(token){
                 return navigate("/dashboard")
             }else{
                 toast.error("Faça seu login!")
             }
         }
+  
+        const userDecodedToken = jwtDecode(token)
 
     return (
         <>
@@ -50,6 +51,7 @@ export default function Header(header) {
                         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                             <a href="/login" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a>
                         </div>
+                        <a href={`/userLoggedDetail/id/${userDecodedToken.id}`}><img class="w-10 h-10 rounded-full ml-5 transition-transform duration-300 ease-in-out transform hover:scale-105 cursor-pointer" src={userDecodedToken.avatar} alt="Rounded avatar"></img></a>
                     </nav>
                 </header>
             }

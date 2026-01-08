@@ -7,7 +7,7 @@ import axios from "axios";
 import { primeiraLetraMaiuscula } from "../../components/MyCard";
 import { jwtDecode } from "jwt-decode"
 
-export default function UserDetail() {
+export default function UserLoggedDetail() {
 
 
     const { id } = useParams()
@@ -68,26 +68,23 @@ export default function UserDetail() {
                                 </p>
                             </div>
                             <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-                                {userDecodedToken.role == "admin" ? (
-                                    <>
-                                        <a
-                                            href="#"
-                                            title=""
-                                            class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                            role="button"
-                                        >
-                                            Edit
-                                        </a>
-                                        <a
-                                            href="#"
-                                            title=""
-                                            class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-red-900 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                            role="button"
-                                        >
-                                            Delete
-                                        </a>
-                                    </>) : <></>}
 
+                                <a
+                                    href="#"
+                                    title=""
+                                    class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                    role="button"
+                                >
+                                    Edit
+                                </a>
+                                <a
+                                    href="#"
+                                    title=""
+                                    class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-red-900 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                    role="button"
+                                >
+                                    Delete
+                                </a>
 
                                 <a
                                     href="#"
