@@ -4,6 +4,7 @@ import MyCard from "../../components/MyCard";
 import { api } from "../services/api";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router";
+import Footer from "../../components/Footer";
 
 export default function Dashboard() {
 
@@ -22,9 +23,9 @@ export default function Dashboard() {
 
             setUsers(usuariosApi.data)
 
-        } catch(error){
-                toast.error(error.response.data.error)
-                setTimeout(() => {
+        } catch (error) {
+            toast.error(error.response.data.error)
+            setTimeout(() => {
                 navigate("/login");
             }, 3000)
         }
@@ -37,7 +38,7 @@ export default function Dashboard() {
     return (
         <>
             <Header />
-            <ToastContainer/>
+            <ToastContainer />
 
             <br />
 
@@ -47,6 +48,9 @@ export default function Dashboard() {
                 ))}
                 <br />
             </ul>
+
+            <Footer />
+
         </>
     )
 }

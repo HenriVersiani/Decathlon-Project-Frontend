@@ -6,23 +6,27 @@ import { useNavigate } from "react-router";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
-export default function Login() {
+export default function Home() {
 
+    const [nome, setNome] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
 
 
-    async function loginUser() {
-        const req = await axios.post("http://localhost:3000/users/login",{
+    async function createUser() {
+        const req = await axios.post("http://localhost:3000/users", {
+            "nome": nome,
             "email": email,
-            "senha": password
+            "senha": password,
+            "imagem": "https://img.freepik.com/vetores-premium/icone-de-perfil-de-usuario-em-estilo-plano-ilustracao-em-vetor-avatar-membro-em-fundo-isolado-conceito-de-negocio-de-sinal-de-permissao-humana_157943-15752.jpg?semt=ais_hybrid&w=740&q=80",
         })
 
         const res = await req.data
 
-         if (res.token) {
-            localStorage.setItem("token", res.token)
+        console.log(res)
+
+        if (res.token) {
             toast.success("Success!")
             setTimeout(() => {
                 navigate("/dashboard");
@@ -30,12 +34,12 @@ export default function Login() {
         } else {
             toast.error(res.error)
         }
-    
+
     }
 
     return (
         <>
-            <Header header="no"/>
+        <Header header="no"/>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mb-20 mt-10">
                 <ToastContainer />
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -45,12 +49,27 @@ export default function Login() {
                         className="mx-auto h-20 w-auto rounded"
                     />
                     <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-                        Login to your account
+                        Create your account
                     </h2>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form action={loginUser} method="POST" className="space-y-6">
+                    <form action={createUser} method="POST" className="space-y-6">
+
+                        <div>
+                            <label htmlFor="name" className="block text-sm/6 font-medium text-gray-900">
+                                Name
+                            </label>
+                            <div className="mt-2">
+                                <MyInput
+                                    inputHandle={({ target }) => setNome(target.value)}
+                                    inputPlaceholder="ex: Henrique"
+                                    inputType="name"
+                                    inputValue={nome}
+                                    inputClass="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                ></MyInput>
+                            </div>
+                        </div>
 
                         <div>
                             <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
@@ -74,8 +93,8 @@ export default function Login() {
                                     Password
                                 </label>
                                 <div className="text-sm">
-                                    <a href="/" className="font-semibold text-[#1C1C2B] hover:text-gray-700">
-                                        Create an Account
+                                    <a href="/login" className="font-semibold text-[#1C1C2B] hover:text-gray-700">
+                                        Login
                                     </a>
                                 </div>
                             </div>
