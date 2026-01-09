@@ -24,9 +24,8 @@ export default function Home() {
 
         const res = await req.data
 
-        console.log(res)
-
         if (res.token) {
+            localStorage.setItem("token", res.token)
             toast.success("Success!")
             setTimeout(() => {
                 navigate("/dashboard");

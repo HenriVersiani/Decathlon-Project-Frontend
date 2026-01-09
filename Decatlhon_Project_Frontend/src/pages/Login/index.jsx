@@ -21,8 +21,6 @@ export default function Login() {
 
         const res = await req.data
 
-        console.log(res)
-
          if (res.token) {
             localStorage.setItem("token", res.token)
             toast.success("Success!")
@@ -76,7 +74,7 @@ export default function Login() {
                                     Password
                                 </label>
                                 <div className="text-sm">
-                                    <a href="/" className="font-semibold text-[#1C1C2B] hover:text-gray-700">
+                                    <a href="/register" className="font-semibold text-[#1C1C2B] hover:text-gray-700">
                                         Create an Account
                                     </a>
                                 </div>
