@@ -6,6 +6,7 @@ import Dashboard from './pages/DashBoard'
 import Register from './pages/Register/index,'
 import UserDetail from './pages/UserDetail'
 import UserLoggedDetail from './pages/UserLoggedDetail'
+import EditUser from './pages/EditUser'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path='/register' element={<Register/>}></Route>
         <Route path='/user/id/:id' element={<UserDetail/>}></Route>
         <Route path='/userLoggedDetail/id/:id' element={<UserLoggedDetail/>}></Route>
+        <Route path='/edit/:id' element={<EditUser/>}></Route>
     </Routes>
   )
 }

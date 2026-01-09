@@ -21,7 +21,7 @@ export default function Header(header) {
 
     if (token) {
         userDecodedToken = jwtDecode(token);
-    }
+    }-
 
     return (
         <>
