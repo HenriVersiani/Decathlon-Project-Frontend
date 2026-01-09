@@ -11,16 +11,42 @@ export default function Home() {
     const [nome, setNome] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [role, setRole] = useState("")
     const navigate = useNavigate()
 
 
     async function createUser() {
-        const req = await axios.post("http://localhost:3000/users", {
-            "nome": nome,
-            "email": email,
-            "senha": password,
-            "imagem": "https://img.freepik.com/vetores-premium/icone-de-perfil-de-usuario-em-estilo-plano-ilustracao-em-vetor-avatar-membro-em-fundo-isolado-conceito-de-negocio-de-sinal-de-permissao-humana_157943-15752.jpg?semt=ais_hybrid&w=740&q=80",
-        })
+
+        const token = localStorage.getItem("token")
+
+        let req = null;
+
+        if (role == "admin") {
+
+            req = await axios.post(
+                "http://localhost:3000/users/admin",
+                {
+                    nome: nome,
+                    email: email,
+                    senha: password,
+                    imagem: "https://img.freepik.com/vetores-premium/icone-de-perfil-de-usuario-em-estilo-plano-ilustracao-em-vetor-avatar-membro-em-fundo-isolado-conceito-de-negocio-de-sinal-de-permissao-humana_157943-15752.jpg?semt=ais_hybrid&w=740&q=80"
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": token
+                    }
+                }
+            );
+        } else {
+
+            req = await axios.post("http://localhost:3000/users", {
+                "nome": nome,
+                "email": email,
+                "senha": password,
+                "imagem": "https://img.freepik.com/vetores-premium/icone-de-perfil-de-usuario-em-estilo-plano-ilustracao-em-vetor-avatar-membro-em-fundo-isolado-conceito-de-negocio-de-sinal-de-permissao-humana_157943-15752.jpg?semt=ais_hybrid&w=740&q=80",
+            })
+        }
 
         const res = await req.data
 
@@ -34,11 +60,12 @@ export default function Home() {
             toast.error(res.error)
         }
 
+
     }
 
     return (
         <>
-        <Header header="no"/>
+            <Header header="no" />
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mb-20 mt-10">
                 <ToastContainer />
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -85,6 +112,22 @@ export default function Home() {
                             </div>
                         </div>
 
+                        <div>
+                            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+                                Profile
+                            </label>
+                            <div className="mt-2">
+
+                                <form class="max-w-sm mx-auto">
+                                    <select value={role} onChange={(e) => setRole(e.target.value)} id="countries" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                        <option selected>Please select a profile:</option>
+                                        <option value="user">User</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </form>
+
+                            </div>
+                        </div>
 
                         <div>
                             <div className="flex items-center justify-between">
@@ -119,7 +162,7 @@ export default function Home() {
                     </form>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     )
 }

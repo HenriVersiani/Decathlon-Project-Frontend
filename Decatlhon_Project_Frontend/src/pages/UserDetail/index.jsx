@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { primeiraLetraMaiuscula } from "../../components/MyCard";
 import { jwtDecode } from "jwt-decode"
+import { api } from "../services/api";
 
 export default function UserDetail() {
 
@@ -42,6 +43,18 @@ export default function UserDetail() {
         fetchUsuario()
     }, [])
 
+    async function deletarUsuario(id) {
+        const response = await api.delete(`/users/${id}`,{
+             headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                }
+        })
+        toast.success("User Deleted!");
+        setTimeout(() => {
+            navigate("/dashboard");
+        }, 2000)
+    }
 
     return (
         <>
@@ -70,51 +83,23 @@ export default function UserDetail() {
                             <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
                                 {userDecodedToken.role == "admin" ? (
                                     <>
-                                        <a
-                                            href="#"
+                                        <button
+                                            onClick={''}
                                             title=""
-                                            class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                            class="flex items-center justify-center py-2.5 px-5 text-sm cursor-pointer font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                             role="button"
                                         >
                                             Edit
-                                        </a>
-                                        <a
-                                            href="#"
+                                        </button>
+                                        <button
+                                            onClick={() => deletarUsuario(id)}
                                             title=""
-                                            class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-red-900 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                            class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 cursor-pointer focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-red-900 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                             role="button"
                                         >
                                             Delete
-                                        </a>
+                                        </button>
                                     </>) : <></>}
-
-
-                                <a
-                                    href="#"
-                                    title=""
-                                    class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
-                                    role="button"
-                                >
-                                    <svg
-                                        class="w-5 h-5 -ms-2 me-2"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
-                                        />
-                                    </svg>
-
-                                    Add to cart
-                                </a>
                             </div>
 
                             <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />

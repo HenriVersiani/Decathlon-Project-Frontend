@@ -8,20 +8,24 @@ export default function Header(header) {
     const token = localStorage.getItem("token")
     const navigate = useNavigate()
 
-        async function userAlreadyLogged(token) {
-    
-            if(token){
-                return navigate("/dashboard")
-            }else{
-                toast.error("Faça seu login!")
-            }
+    async function userAlreadyLogged(token) {
+
+        if (token) {
+            return navigate("/dashboard")
+        } else {
+            toast.error("Faça seu login!")
         }
-  
-        const userDecodedToken = jwtDecode(token)
+    }
+
+    let userDecodedToken = null
+
+    if (token) {
+        userDecodedToken = jwtDecode(token);
+    }
 
     return (
         <>
-            <ToastContainer/>
+            <ToastContainer />
             {header.header == "no" ?
                 <header class="bg-[#17172B]">
                     <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
@@ -30,7 +34,7 @@ export default function Header(header) {
                             <a href="/register" class="text-sm/6 font-semibold text-white cursor-pointer">Register <span aria-hidden="true">&rarr;</span></a>
                         </div>
                         <div class="hidden lg:flex lg:flex-1 justify-end">
-                            <button href="/login" class="text-sm/6 font-semibold text-white cursor-pointer" onClick={()=> userAlreadyLogged(token)}>Log in <span aria-hidden="true">&rarr;</span></button>
+                            <button href="/login" class="text-sm/6 font-semibold text-white cursor-pointer" onClick={() => userAlreadyLogged(token)}>Log in <span aria-hidden="true">&rarr;</span></button>
                         </div>
                     </nav>
                 </header> :
