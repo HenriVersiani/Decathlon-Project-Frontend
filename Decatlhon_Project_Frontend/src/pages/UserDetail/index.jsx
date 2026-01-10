@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { primeiraLetraMaiuscula } from "../../components/MyCard";
 import { jwtDecode } from "jwt-decode"
-import { api } from "../services/api";
+import  api  from "../../services/api";
 
 export default function UserDetail() {
 
@@ -84,7 +84,7 @@ export default function UserDetail() {
                                 {userDecodedToken.role == "admin" ? (
                                     <>
                                         <button
-                                            onClick={navigate(`/edit/${id}`)}
+                                            onClick={() => navigate(`/edit/${id}`)}
                                             title=""
                                             class="flex items-center justify-center py-2.5 px-5 text-sm cursor-pointer font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                             role="button"

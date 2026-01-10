@@ -2,11 +2,12 @@ import Header from "../../components/Header";
 import { toast, ToastContainer } from "react-toastify";
 import Footer from "../../components/Footer";
 import { useNavigate, useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { primeiraLetraMaiuscula } from "../../components/MyCard";
 import { jwtDecode } from "jwt-decode"
-import { api } from "../services/api";
+import api from "../../services/api";
+import MyInput from "../../components/MyInput";
 
 export default function EditUser() {
 
@@ -16,108 +17,175 @@ export default function EditUser() {
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
-    const [imagem, setImagem] = useState('')
+    const [senhaNova, setSenhaNova] = useState('')
     const [role, setRole] = useState('')
-    const token = localStorage.getItem("token")
+    const [imagem, setImagem] = useState(null) // File
+    const [imagemPreview, setImagemPreview] = useState(null)
 
+    const token = localStorage.getItem("token")
     const userDecodedToken = jwtDecode(token)
 
     useEffect(() => {
         async function fetchUsuario() {
-
             const req = await axios.get(`http://localhost:3000/users/id/${id}`, {
                 headers: {
-                    "Content-Type": "application/json",
                     "Authorization": token
                 }
-            })
+            });
 
-            const usuario = req.data
-
-            setNome(usuario.nome)
-            setEmail(usuario.email)
-            setSenha(usuario.senha)
-            setImagem(usuario.imagem)
-            setRole(usuario.role)
+            const usuario = req.data;
+            setNome(usuario.nome);
+            setEmail(usuario.email);
+            setImagem(usuario.imagem);
+            setRole(usuario.role);
         }
-        fetchUsuario()
-    }, [])
 
-    async function deletarUsuario(id) {
-        const response = await api.delete(`/users/${id}`,{
-             headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": token
-                }
+        console.log(imagem)
+
+
+
+        fetchUsuario();
+    }, []);
+
+
+
+    async function editUsuario(e) {
+        e.preventDefault()
+
+        let imageUrl = ""
+
+        if (imagem) {
+            const formData = new FormData()
+            formData.append("image", imagem)
+
+            const imgbbApiKey = "d345d40546abe58bf622c91ca3c57470"
+            const uploadResponse = await axios.post(
+                `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+                formData
+            )
+
+            imageUrl = uploadResponse.data.data.display_url
+        }
+
+        await axios.put(`http://localhost:3000/users/${id}`, {
+            nome,
+            email,
+            imagem: imageUrl // 🔥 STRING FINAL
+        }, {
+            headers: {
+                Authorization: token
+            }
         })
-        toast.success("User Deleted!");
-        setTimeout(() => {
-            navigate("/dashboard");
-        }, 2000)
     }
 
     return (
         <>
             <Header />
             <ToastContainer />
-            <section class="py-8 bg-white md:py-16 dark:bg-white antialiased">
-                <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
-                    <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
-                        <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-                            <img class="w-full hidden dark:block" src={imagem} alt="Usuario" />
-                        </div>
-
-                        <div class="mt-6 sm:mt-8 lg:mt-0">
-                            <h1
-                                class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-black"
-                            >
-                                {primeiraLetraMaiuscula(role)}
-                            </h1>
-                            <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
-                                <p
-                                    class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-black"
-                                >
-                                    {nome}
-                                </p>
-                            </div>
-                            <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-                                {userDecodedToken.role == "admin" ? (
-                                    <>
-                                        <button
-                                            onClick={''}
-                                            title=""
-                                            class="flex items-center justify-center py-2.5 px-5 text-sm cursor-pointer font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                            role="button"
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={() => deletarUsuario(id)}
-                                            title=""
-                                            class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 cursor-pointer focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-red-900 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                            role="button"
-                                        >
-                                            Delete
-                                        </button>
-                                    </>) : <></>}
-                            </div>
-
-                            <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
-
-                            <p class="mb-6 text-gray-500 dark:text-gray-400">
-                                {email}
-                            </p>
-
-                            <p class="text-gray-500 dark:text-gray-400">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
-                        </div>
-                    </div>
+            <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mb-20 mt-10">
+                <ToastContainer />
+                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                    <img
+                        alt="Your Company"
+                        src="https://media.licdn.com/dms/image/v2/C4E0BAQGNxHh-eJXjXA/company-logo_200_200/company-logo_200_200/0/1630650969070/apura_logo?e=2147483647&v=beta&t=3lfapnuET_Gn9tvEYHXPatFMELN9dpdKRZIPZbHwGWA"
+                        className="mx-auto h-20 w-auto rounded"
+                    />
+                    <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+                        Edit your Profile
+                    </h2>
                 </div>
-            </section>
+
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                    <form method="POST" className="space-y-6">
+
+                        <div>
+                            <label htmlFor="name" className="block text-sm/6 font-medium text-gray-900">
+                                Name
+                            </label>
+                            <div className="mt-2">
+                                <MyInput
+                                    inputHandle={({ target }) => setNome(target.value)}
+                                    inputPlaceholder="ex: Henrique"
+                                    inputType="name"
+                                    inputValue={nome}
+                                    inputClass="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                ></MyInput>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+                                Email address
+                            </label>
+                            <div className="mt-2">
+                                <MyInput
+                                    inputHandle={({ target }) => setEmail(target.value)}
+                                    inputPlaceholder="ex: xxx@gmail.com"
+                                    inputType="email"
+                                    inputValue={email}
+                                    inputClass="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                ></MyInput>
+                            </div>
+                        </div>
+
+                        <div>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center justify-between">
+                                <div className="mt-2">
+                                    <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
+                                        Current Password
+                                    </label>
+                                    <MyInput
+                                        inputHandle={({ target }) => setSenha(target.value)}
+                                        inputPlaceholder="ex: 123!@#"
+                                        inputType="email"
+                                        inputValue={senha}
+                                        inputClass="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                    ></MyInput>
+                                    <br />
+                                    <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
+                                        New Password
+                                    </label>
+                                    <MyInput
+                                        inputHandle={({ target }) => setSenhaNova(target.value)}
+                                        inputPlaceholder="ex: 123!@#"
+                                        inputType="email"
+                                        inputValue={senhaNova}
+                                        inputClass="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                    ></MyInput>
+                                </div>
+                                <div className="flex flex-col items-center gap-4 p-6">
+                                    <label className="cursor-pointer">
+                                        <MyInput
+                                            inputType="file"
+                                            inputHandle={({ target }) => {
+                                                const file = target.files[0]
+                                                if (!file) return
+
+                                                setImagem(file) // File real
+                                                setImagemPreview(URL.createObjectURL(file)) // só preview
+                                            }}
+                                        />
+
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button
+                                type="button"
+                                onClick={(e) => editUsuario(e)}
+                                className="flex w-full cursor-pointer justify-center rounded-md bg-[#1C1C2B] px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                Edit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <Footer />
 
         </>

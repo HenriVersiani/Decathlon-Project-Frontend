@@ -17,11 +17,11 @@ export default function Header(header) {
         }
     }
 
-    let userDecodedToken = null
+    let userDecodedToken = ''
 
     if (token) {
         userDecodedToken = jwtDecode(token);
-    }-
+    }
 
     return (
         <>

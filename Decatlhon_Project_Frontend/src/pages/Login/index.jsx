@@ -25,7 +25,7 @@ export default function Login() {
             localStorage.setItem("token", res.token)
             toast.success("Success!")
             setTimeout(() => {
-                navigate("/dashboard");
+                navigate("/");
             }, 2000)
         } else {
             toast.error(res.error)

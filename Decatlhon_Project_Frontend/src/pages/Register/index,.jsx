@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { jwtDecode } from "jwt-decode";
 
 export default function Home() {
 
@@ -13,11 +14,12 @@ export default function Home() {
     const [password, setPassword] = useState("")
     const [role, setRole] = useState("")
     const navigate = useNavigate()
-
+    
+    const token = localStorage.getItem("token")
+    const userDecodedToken = jwtDecode(token)
 
     async function createUser() {
 
-        const token = localStorage.getItem("token")
 
         let req = null;
 
@@ -54,7 +56,7 @@ export default function Home() {
             localStorage.setItem("token", res.token)
             toast.success("Success!")
             setTimeout(() => {
-                navigate("/dashboard");
+                navigate("/");
             }, 2000)
         } else {
             toast.error(res.error)
@@ -122,7 +124,9 @@ export default function Home() {
                                     <select value={role} onChange={(e) => setRole(e.target.value)} id="countries" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                         <option selected>Please select a profile:</option>
                                         <option value="user">User</option>
-                                        <option value="admin">Admin</option>
+                                        {userDecodedToken.role === "admin" ? (
+                                            <option value="admin">Admin</option>
+                                        ) : null}
                                     </select>
                                 </form>
 

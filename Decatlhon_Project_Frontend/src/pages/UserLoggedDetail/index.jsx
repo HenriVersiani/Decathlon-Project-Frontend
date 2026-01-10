@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { primeiraLetraMaiuscula } from "../../components/MyCard";
 import { jwtDecode } from "jwt-decode"
-import { api } from "../services/api";
+import api from "../../services/api"
 
 export default function UserLoggedDetail() {
 
@@ -50,9 +50,10 @@ export default function UserLoggedDetail() {
                         "Authorization": token
                     }
             })
+            localStorage.clear()
             toast.success("User Deleted!");
             setTimeout(() => {
-                navigate("/dashboard");
+                navigate("/login");
             }, 2000)
         }
 
@@ -83,7 +84,7 @@ export default function UserLoggedDetail() {
                             <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
 
                                 <button
-                                    onClick={''}
+                                    onClick={() => navigate(`/edit/${id}`)}
                                     title=""
                                     class="flex items-center justify-center py-2.5 px-5 cursor-pointer text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                     role="button"

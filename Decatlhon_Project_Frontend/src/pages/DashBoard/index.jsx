@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import MyCard from "../../components/MyCard";
-import { api } from "../services/api";
+import  api  from "../../services/api";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router";
 import Footer from "../../components/Footer";
