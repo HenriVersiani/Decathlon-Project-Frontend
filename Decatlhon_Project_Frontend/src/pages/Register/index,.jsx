@@ -14,9 +14,9 @@ export default function Home() {
     const [password, setPassword] = useState("")
     const [role, setRole] = useState("")
     const navigate = useNavigate()
-    
+
     const token = localStorage.getItem("token")
-    const userDecodedToken = jwtDecode(token)
+    const userDecodedToken = token ? jwtDecode(token) : null
 
     async function createUser() {
 
@@ -124,9 +124,9 @@ export default function Home() {
                                     <select value={role} onChange={(e) => setRole(e.target.value)} id="countries" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                         <option selected>Please select a profile:</option>
                                         <option value="user">User</option>
-                                        {userDecodedToken.role === "admin" ? (
+                                        {userDecodedToken?.role === "admin" && (
                                             <option value="admin">Admin</option>
-                                        ) : null}
+                                        )}
                                     </select>
                                 </form>
 

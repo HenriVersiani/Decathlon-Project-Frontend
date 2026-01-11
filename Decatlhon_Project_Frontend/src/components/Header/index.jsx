@@ -13,15 +13,22 @@ export default function Header(header) {
         if (token) {
             return navigate("/dashboard")
         } else {
-            toast.error("Faça seu login!")
+            toast.error("Faça seu login!", {
+                autoClose: 2000,
+                onClose: () => {
+                    navigate("/login")
+                }
+            })
         }
     }
 
-    let userDecodedToken = ''
+    let userDecodedToken = {}
 
     if (token) {
         userDecodedToken = jwtDecode(token);
+        console.log(userDecodedToken)
     }
+
 
     return (
         <>
@@ -40,12 +47,7 @@ export default function Header(header) {
                 </header> :
                 <header class="bg-[#17172B]">
                     <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
-                        <div class="flex lg:flex-1">
-                            <a href="/" class="-m-1.5 p-0.5">
-                                <span class="sr-only">Your Company</span>
-                                <img src="https://media.licdn.com/dms/image/v2/C4E0BAQGNxHh-eJXjXA/company-logo_200_200/company-logo_200_200/0/1630650969070/apura_logo?e=2147483647&v=beta&t=3lfapnuET_Gn9tvEYHXPatFMELN9dpdKRZIPZbHwGWA" alt="" class="h-10 w-auto rounded" />
-                            </a>
-                        </div>
+
 
                         <el-popover-group class="hidden lg:flex lg:gap-x-12">
                             <a href="/" class="text-sm/6 font-semibold text-white">Home</a>
@@ -55,7 +57,7 @@ export default function Header(header) {
                         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                             <a href="/login" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a>
                         </div>
-                        <a href={`/userLoggedDetail/id/${userDecodedToken.id}`}><img class="w-10 h-10 rounded-full ml-5 transition-transform duration-300 ease-in-out transform hover:scale-105 cursor-pointer" src={userDecodedToken.avatar} alt="Rounded avatar"></img></a>
+                        <a href={`/userLoggedDetail/id/${userDecodedToken.sub}`}><img class="w-10 h-10 rounded-full ml-5 transition-transform duration-300 ease-in-out transform hover:scale-105 cursor-pointer" src={userDecodedToken.avatar} alt="Rounded avatar"></img></a>
                     </nav>
                 </header>
             }
