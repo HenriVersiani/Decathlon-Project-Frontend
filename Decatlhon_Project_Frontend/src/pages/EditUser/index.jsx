@@ -37,7 +37,6 @@ export default function EditUser() {
             setNome(usuario.nome);
             setEmail(usuario.email);
             setImagem(usuario.imagem);
-            setRole(usuario.role);
         }
 
         fetchUsuario();
@@ -84,12 +83,23 @@ export default function EditUser() {
         })
 
         setLoading(false)
-        
+
         if (reqSenha.data.error) {
-            return toast.error(reqSenha.data.error)
+            toast.error(reqSenha.data.error, {
+                autoClose: 3000
+            })
+
+            setTimeout(() => {
+                toast.dismiss()
+            }, 3000)
+            return
         }
 
-        toast.success("User Edited!");
+
+
+        toast.success("User Edited!", {
+            autoClose: 2000
+        })
         setTimeout(() => {
             navigate("/dashboard");
         }, 2000)
@@ -98,10 +108,9 @@ export default function EditUser() {
 
     return (
         <>
+
             <Header />
-            <ToastContainer />
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mb-20 mt-10">
-                <ToastContainer />
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
                         alt="Your Company"
