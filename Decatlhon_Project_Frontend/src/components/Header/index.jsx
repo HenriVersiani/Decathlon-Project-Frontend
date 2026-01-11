@@ -1,14 +1,19 @@
+import axios from "axios"
 import { jwtDecode } from "jwt-decode"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { toast, ToastContainer } from "react-toastify"
 
-export default function Header(header) {
 
+export default function Header(header) {
+    
+    const [imagem, setImagem] = useState("")
     const token = localStorage.getItem("token")
     const navigate = useNavigate()
 
     async function userAlreadyLogged(token) {
+
+
 
         if (token) {
             return navigate("/dashboard")
@@ -22,11 +27,27 @@ export default function Header(header) {
         }
     }
 
+    useEffect(() => {
+        async function fetchUsuario() {
+            const req = await axios.get(`http://localhost:3000/users/id/${userDecodedToken.sub}`, {
+                headers: {
+                    "Authorization": token
+                }
+            });
+
+            const usuario = req.data;
+            setImagem(usuario.imagem);
+        }
+
+                console.log(imagem)
+
+        fetchUsuario();
+    }, []);
+
     let userDecodedToken = {}
 
     if (token) {
         userDecodedToken = jwtDecode(token);
-        console.log(userDecodedToken)
     }
 
 
@@ -57,7 +78,7 @@ export default function Header(header) {
                         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                             <a href="/login" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a>
                         </div>
-                        <a href={`/userLoggedDetail/id/${userDecodedToken.sub}`}><img class="w-10 h-10 rounded-full ml-5 transition-transform duration-300 ease-in-out transform hover:scale-105 cursor-pointer" src={userDecodedToken.avatar} alt="Rounded avatar"></img></a>
+                        <a href={`/userLoggedDetail/id/${userDecodedToken.sub}`}><img class="w-10 h-10 rounded-full ml-5 transition-transform duration-300 ease-in-out transform hover:scale-105 cursor-pointer" src={imagem} alt="Rounded avatar"></img></a>
                     </nav>
                 </header>
             }

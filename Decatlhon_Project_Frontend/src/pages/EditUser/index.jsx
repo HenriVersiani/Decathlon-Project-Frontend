@@ -18,9 +18,9 @@ export default function EditUser() {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [senhaNova, setSenhaNova] = useState('')
-    const [role, setRole] = useState('')
     const [imagem, setImagem] = useState(null) // File
     const [imagemPreview, setImagemPreview] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const token = localStorage.getItem("token")
     const userDecodedToken = jwtDecode(token)
@@ -40,10 +40,6 @@ export default function EditUser() {
             setRole(usuario.role);
         }
 
-        console.log(imagem)
-
-
-
         fetchUsuario();
     }, []);
 
@@ -51,6 +47,7 @@ export default function EditUser() {
 
     async function editUsuario(e) {
         e.preventDefault()
+        setLoading(true)
 
         let imageUrl = ""
 
@@ -67,15 +64,36 @@ export default function EditUser() {
             imageUrl = uploadResponse.data.data.display_url
         }
 
-        await axios.put(`http://localhost:3000/users/${id}`, {
+        const reqData = await axios.put(`http://localhost:3000/users/${id}`, {
             nome,
             email,
-            imagem: imageUrl // 🔥 STRING FINAL
+            imagem: imageUrl
         }, {
             headers: {
                 Authorization: token
             }
         })
+
+        const reqSenha = await axios.put(`http://localhost:3000/users/senha/${id}`, {
+            senhaAntiga: senha,
+            senhaNova: senhaNova
+        }, {
+            headers: {
+                Authorization: token
+            }
+        })
+
+        setLoading(false)
+        
+        if (reqSenha.data.error) {
+            return toast.error(reqSenha.data.error)
+        }
+
+        toast.success("User Edited!");
+        setTimeout(() => {
+            navigate("/dashboard");
+        }, 2000)
+
     }
 
     return (
@@ -157,19 +175,36 @@ export default function EditUser() {
                                     ></MyInput>
                                 </div>
                                 <div className="flex flex-col items-center gap-4 p-6">
-                                    <label className="cursor-pointer">
-                                        <MyInput
-                                            inputType="file"
-                                            inputHandle={({ target }) => {
+                                    <div className="flex flex-col items-center gap-3">
+                                        <label
+                                            htmlFor="file-upload"
+                                            className="cursor-pointer rounded-lg border-2 border-dashed border-gray-300 px-6 py-4 text-sm text-gray-600 transition
+                   hover:border-gray-900 hover:bg-gray-100 hover:text-blue-900"
+                                        >
+                                            📷 Select profile image
+                                        </label>
+
+                                        <input
+                                            id="file-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={({ target }) => {
                                                 const file = target.files[0]
                                                 if (!file) return
 
-                                                setImagem(file) // File real
-                                                setImagemPreview(URL.createObjectURL(file)) // só preview
+                                                setImagem(file)
+                                                setImagemPreview(URL.createObjectURL(file))
                                             }}
                                         />
 
-                                    </label>
+                                        {imagemPreview && (
+                                            <img
+                                                src={imagemPreview}
+                                                alt="Preview"
+                                                className="h-24 w-24 rounded-full object-cover shadow-md"
+                                            />
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -177,10 +212,21 @@ export default function EditUser() {
                         <div>
                             <button
                                 type="button"
-                                onClick={(e) => editUsuario(e)}
-                                className="flex w-full cursor-pointer justify-center rounded-md bg-[#1C1C2B] px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                disabled={loading}
+                                onClick={editUsuario}
+                                className={`flex w-full justify-center items-center gap-2 rounded-md
+                                            bg-[#1C1C2B] px-3 py-2 text-sm font-semibold text-white shadow-xs
+                                            transition hover:bg-gray-700 cursor-pointer
+                                 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
                             >
-                                Edit
+                                {loading ? (
+                                    <>
+                                        <span className="spinner"></span>
+                                        Saving...
+                                    </>
+                                ) : (
+                                    "Edit"
+                                )}
                             </button>
                         </div>
                     </form>
