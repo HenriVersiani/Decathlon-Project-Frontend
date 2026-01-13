@@ -50,7 +50,8 @@ export default function UserDetail() {
                     "Authorization": token
                 }
         })
-        toast.success("User Deleted!");
+
+        toast.success(response.data.message);
         setTimeout(() => {
             navigate("/dashboard");
         }, 2000)

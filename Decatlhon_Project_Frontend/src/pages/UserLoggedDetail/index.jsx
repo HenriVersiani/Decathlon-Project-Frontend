@@ -51,7 +51,7 @@ export default function UserLoggedDetail() {
                     }
             })
             localStorage.clear()
-            toast.success("User Deleted!");
+            toast.success(response.data.message);
             setTimeout(() => {
                 navigate("/login");
             }, 2000)

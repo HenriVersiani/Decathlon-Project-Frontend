@@ -18,7 +18,7 @@ export default function Header(header) {
         if (token) {
             return navigate("/dashboard")
         } else {
-            toast.error("Faça seu login!", {
+            toast.error("Please login!", {
                 autoClose: 2000,
                 onClose: () => {
                     navigate("/login")
