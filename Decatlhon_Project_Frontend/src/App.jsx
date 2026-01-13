@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Route, Routes } from "react-router"
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -7,7 +6,7 @@ import Register from './pages/Register/index,'
 import UserDetail from './pages/UserDetail'
 import UserLoggedDetail from './pages/UserLoggedDetail'
 import EditUser from './pages/EditUser'
-import { toast, ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
   <ToastContainer

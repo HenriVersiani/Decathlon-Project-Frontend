@@ -2,11 +2,9 @@ import Header from "../../components/Header";
 import { toast, ToastContainer } from "react-toastify";
 import Footer from "../../components/Footer";
 import { useNavigate, useParams } from "react-router";
-import { use, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import axios from "axios";
-import { primeiraLetraMaiuscula } from "../../components/MyCard";
 import { jwtDecode } from "jwt-decode"
-import api from "../../services/api";
 import MyInput from "../../components/MyInput";
 
 export default function EditUser() {
@@ -84,14 +82,12 @@ export default function EditUser() {
 
         setLoading(false)
 
+        console.log(reqSenha.data.error)
+
         if (reqSenha.data.error) {
             toast.error(reqSenha.data.error, {
                 autoClose: 3000
             })
-
-            setTimeout(() => {
-                toast.dismiss()
-            }, 3000)
             return
         }
 
@@ -110,6 +106,7 @@ export default function EditUser() {
         <>
 
             <Header />
+            <ToastContainer />
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mb-20 mt-10">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
